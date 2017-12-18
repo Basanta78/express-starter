@@ -1,7 +1,7 @@
 import Boom from 'boom';
 import User from '../models/user';
 import todo from '../models/todo';
-import token from '../models/tokens';
+import Token from '../models/tokens';
 import * as jwt from '../utils/jwt';
 
 let bcrypt = require('bcrypt');
@@ -61,36 +61,34 @@ export function createUser(user) {
 }
 
 export function validateUser(user){
-  console.log(user);
-  return getUserByEmail(user.email).then(obtainUser=>{
-    return bcrypt.compareSync(user.password, obtainUser.get('password'));
+  let users = getUserByEmail(user.email);
+  return users.then(obtainUser=>{
+    if(bcrypt.compareSync(user.password, obtainUser.get('password'))){
+      return obtainUser;
+    }
+    return false;
   })
 }
-async function storeToken(user,refreshToken){
-  return new token({
-    user_id: user.id,
-    token: refreshToken
-  }).save().then(token => token.refresh());
-}
-export async function loginUser (user) {
-    let validate  = await validateUser(user);
 
-    if(validate){
+export async function loginUser (user) {
+    let validUser = await validateUser(user);
+    if(validUser){
       try{
-        let accessToken = await jwt.generateAccessToken(user);
-        let refreshToken = await jwt.generateRefreshToken(user);
-         console.log(refreshToken)
-        // await storeToken(user,refreshToken);
+        let accessToken = jwt.generateAccessToken(user);
+        let refreshToken = jwt.generateRefreshToken(user);
+        console.log(validUser);
+        validUser.token().save({
+          token: refreshToken
+        });
+
         return  {
-          user: user.email,
+          user: validUser,
           token:{
               access:accessToken,
               refresh: refreshToken
             }
 
         };
-        // return userInfo;
-
       }
 
       catch(err) {
@@ -105,10 +103,8 @@ export async function loginUser (user) {
  *
  */
 export async function verifyUser(token) {
-  await jwt.verifyAccessToken(token);
-  // var decoded = jwt.decode(token);
-  // console.log(decoded);
-  return {"verified":true};
+
+  return await jwt.verifyAccessToken(token);
 }
 /**
  * Update a user.
@@ -127,8 +123,24 @@ export function updateUser(id, user) {
  * Delete a user.
  *
  * @param  {Number|String}  id
- * @return {Promise}
+ * @return {Promise}ls
  */
-export function deleteUser(id) {
-  return new User({ id }).fetch().then(user => user.destroy());
+export function deleteUser(token) {
+  try {
+    jwt.verifyRefreshToken(token);
+    return new Token({token}).fetch().then(token => token.destroy());
+  } catch (error) {
+    throw error;
+  }
+  // return new User({ id }).fetch().then(user => user.destroy());
+}
+export function validateRefreshToken(token){
+  console.log(token);
+  return new Token({token}).fetch().then(token => {
+    if (!token) {
+      throw new Boom.notFound('Token not found');
+    }
+
+    return token;
+  });
 }

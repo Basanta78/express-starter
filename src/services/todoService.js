@@ -95,7 +95,7 @@ export function searchText ( id ,search ) {
    qb.where({user_id: id}).andWhere('details','like','%'+search+'%').orWhere('task', 'like', '%'+search+'%')
 
  }).fetchAll({withRelated:['user','tags']})
-   .then(todos =>todos.query((td)=>{
-     return td.where('tags.tag', 'like','%'+search+'%')
-   }));
+   .then(todos => todos.related('tags'));
+     // return td.where(x, 'like','%'+search+'%');
+
 }

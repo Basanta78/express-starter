@@ -1,6 +1,6 @@
 import bookshelf from '../db';
 import todo from '../models/todo';
-import tokens from '../models/tokens';
+import token from './tokens';
 
 
 
@@ -21,7 +21,7 @@ class User extends bookshelf.Model {
     return this.hasMany(todo)
   }
   token(){
-    return this.hasOne(tokens)
+    return this.hasOne(token)
   }
 }
 

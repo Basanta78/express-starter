@@ -18,9 +18,18 @@ router.post('/', userloginValidator, (req, res, next) => {
 
 router.get('/refresh',ensureToken,(req,res,next) =>{
   try{
+    userService
+      .validateRefreshToken(req.token);
     let decoded = verifyRefreshToken(req.token);
     res.json(generateAccessToken(decoded));
   }
+
+
+  // try{
+  //
+  //   let decoded = verifyRefreshToken(req.token);
+  //   res.json(generateAccessToken(decoded));
+  // }
   catch(err){
     res.sendStatus(403);
   }

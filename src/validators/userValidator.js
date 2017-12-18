@@ -25,12 +25,12 @@ function userValidator(req, res, next) {
 const LOGINSCHEMA = {
    email: Joi.string()
     .label('Email')
-    .max(90),
-    // .required(),
+    .max(90)
+    .required(),
    password: Joi.string()
     .label('Password')
     .max(90)
-    // .required()
+    .required()
 };
 /**
  * Validate create/update user request.

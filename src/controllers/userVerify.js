@@ -8,12 +8,11 @@ let jwt = require('jsonwebtoken');
  * POST /api/users
  */
 router.get('/',ensureToken, (req, res, next) => {
-  // let token = req.params.token;
-  console.log(req.token);
-  userService
-    .verifyUser(req.token)
-    .then(data => res.status(HttpStatus.CREATED).json({ data }))
-    .catch(err => next(err));
+    userService
+      .verifyUser(req.token)
+      .then(data => res.status(HttpStatus.CREATED).json({ data }))
+      .catch(err => next(err));
+
 });
 function ensureToken(req,res,next){
   const bearerHeader = req.headers["authorization"];

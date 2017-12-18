@@ -5,6 +5,7 @@ import todoController from './controllers/todo';
 import usersRegisterController from './controllers/userRegister';
 import usersLoginController from './controllers/userLogin';
 import usersVerifyController from './controllers/userVerify';
+import usersLogoutController from './controllers/userLogout'
 
 
 /**
@@ -62,6 +63,7 @@ router.use('/todo', todoController );
 router.use('/register', usersRegisterController);
 router.use('/login',usersLoginController);
 router.use('/verify', usersVerifyController);
+router.use('/logout', usersLogoutController);
 // router.use('/refresh', authValidator.validateRefreshToken, auth.getNewAccessToken);
 
 

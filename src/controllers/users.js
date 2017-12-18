@@ -5,10 +5,29 @@ import * as todoService from '../services/todoService';
 
 import { findUser, userValidator } from '../validators/userValidator';
 import { todoValidator } from "../validators/todoValidator";
+import * as jwt from "../utils/jwt";
 
 const router = Router();
-let jwt = require('jsonwebtoken');
+function ensureToken(req,res,next){
+  const bearerHeader = req.headers["authorization"];
+  if(typeof bearerHeader !== 'undefined'){
+    const bearer = bearerHeader.split(" ");
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    try{
+      jwt.verifyAccessToken(req.token);
+      next();
+    }
+    catch (err){
+      res.send(err);
+    }
 
+
+  }
+  else{
+    res.sendStatus(403);
+  }
+}
 
 /**
  * GET /api/users
@@ -77,11 +96,11 @@ router.put('/:id', findUser, userValidator, (req, res, next) => {
 /**
  * DELETE /api/users/:id
  */
-router.delete('/:id', findUser, (req, res, next) => {
-  userService
-    .deleteUser(req.params.id)
-    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
-    .catch(err => next(err));
-});
+// router.delete('/:id', findUser, (req, res, next) => {
+//   userService
+//     .deleteUser(req.params.id)
+//     .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
+//     .catch(err => next(err));
+// });
 
 export default router;

@@ -1,10 +1,9 @@
 import bookshelf from '../db';
-import todo from '../models/todo';
-import user from '../models/user';
+import user from './user';
 
 
 
-const TABLE_NAME = 'users';
+const TABLE_NAME = 'tokens';
 
 /**
  * User model.

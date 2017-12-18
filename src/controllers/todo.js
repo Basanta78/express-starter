@@ -2,8 +2,6 @@ import { Router } from 'express';
 import HttpStatus from 'http-status-codes';
 import * as todoService from '../services/todoService';
 import { findtodo, todoValidator } from '../validators/todoValidator';
-import { userValidator } from "../validators/userValidator";
-import * as userService from "../services/userService";
 
 const router = Router();
 
