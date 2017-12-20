@@ -4,7 +4,8 @@ import * as userService from '../services/userService';
 import * as todoService from '../services/todoService';
 
 import { findUser, userValidator } from '../validators/userValidator';
-import { todoValidator } from "../validators/todoValidator";
+import { findtodo, todoValidator } from '../validators/todoValidator';
+
 import * as jwt from "../utils/jwt";
 
 const router = Router();
@@ -19,13 +20,13 @@ function ensureToken(req,res,next){
       next();
     }
     catch (err){
-      res.send(err);
+      res.sendStatus(401);
     }
 
 
   }
   else{
-    res.sendStatus(403);
+    res.sendStatus(400);
   }
 }
 
@@ -49,10 +50,11 @@ router.get('/:id', (req, res, next) => {
     .then(data => res.json({ data }))
     .catch(err => next(err));
 });
+
 /**
  * GET /api/users/:id/todo
  */
-router.get('/:id/todo', (req, res, next) => {
+router.get('/:id/todo',ensureToken, (req, res, next) => {
   todoService
     .getUserTodo(req.params.id)
     .then(data => res.json({ data }))
@@ -77,6 +79,7 @@ router.post('/', userValidator, (req, res, next) => {
     .then(data => res.status(HttpStatus.CREATED).json({ data }))
     .catch(err => next(err));
 });
+
 router.post('/:id/todo', todoValidator, (req, res, next) => {
   todoService
     .createUserTodo(req.params.id, req.body)
@@ -84,23 +87,26 @@ router.post('/:id/todo', todoValidator, (req, res, next) => {
     .catch(err => next(err));
 });
 /**
- * PUT /api/users/:id
+ * PUT /api/users/:id/todo/:todoId
  */
-router.put('/:id', findUser, userValidator, (req, res, next) => {
-  userService
-    .updateUser(req.params.id, req.body)
+router.put('/:id/todo/:todoId', findtodo, todoValidator, (req, res, next) => {
+
+  todoService
+    .updateTodo(req.params.todoId, req.body)
     .then(data => res.json({ data }))
     .catch(err => next(err));
 });
 
 /**
- * DELETE /api/users/:id
+ * DELETE /api/users/:id/todo/:todoId
  */
-// router.delete('/:id', findUser, (req, res, next) => {
-//   userService
-//     .deleteUser(req.params.id)
-//     .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
-//     .catch(err => next(err));
-// });
+
+router.delete( '/:id/todo/:todoId', findtodo, ( req, res, next ) => {
+  todoService
+    .deleteTodo( req.params.todoId )
+    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
+    .catch(err => next(err));
+});
+
 
 export default router;

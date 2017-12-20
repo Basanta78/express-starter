@@ -1,7 +1,7 @@
-import { userloginValidator } from "../validators/userValidator";
-import * as userService from "../services/userService";
-import { Router } from "express";
-import * as HttpStatus from "http-status-codes";
+import { userloginValidator } from '../validators/userValidator';
+import * as userService from '../services/userService';
+import { Router } from 'express';
+import * as HttpStatus from 'http-status-codes';
 const router = Router();
 let jwt = require('jsonwebtoken');
 import {verifyRefreshToken, generateAccessToken }from "../utils/jwt";
@@ -9,10 +9,10 @@ import {verifyRefreshToken, generateAccessToken }from "../utils/jwt";
  * POST /api/users
  */
 router.post('/', userloginValidator, (req, res, next) => {
-    userService
-    .loginUser(req.body)
-    .then(data => res.status(HttpStatus.CREATED).json({ data }))
-    .catch(err => next(err));
+    let login = userService.loginUser(req.body);
+    console.log("Login",login);
+    login.then(data => res.status(HttpStatus.CREATED).json({ data }))
+        .catch(err => next(err));
 });
 
 
@@ -23,13 +23,6 @@ router.get('/refresh',ensureToken,(req,res,next) =>{
     let decoded = verifyRefreshToken(req.token);
     res.json(generateAccessToken(decoded));
   }
-
-
-  // try{
-  //
-  //   let decoded = verifyRefreshToken(req.token);
-  //   res.json(generateAccessToken(decoded));
-  // }
   catch(err){
     res.sendStatus(403);
   }

@@ -10,7 +10,7 @@ export function up(knex) {
     table.timestamp('updated_at').notNull();
     table.string('token').notNull();
     table.integer('user_id').unique().notNull();
-    table.foreign('user_id').references('users.id');
+    table.foreign('user_id').references('users.id').onDelete('CASCADE');
   });
 }
 

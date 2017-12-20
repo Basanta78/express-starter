@@ -6,7 +6,7 @@ import tags from '../models/tags';
 const TABLE_NAME = 'todo';
 
 /**
- * User model.
+ * Todo model.
  */
 class ToDo extends bookshelf.Model {
   get tableName() {

@@ -59,9 +59,7 @@ export function createTodo(todos) {
   return new todo({ task: todos.task, userId: todos.user_id }).save().then(todos => todos.refresh());
 }
 
-// export function createUserTodo (user_id,todos) {
-//   return new todo({ task: todos.task, details: todos.details}).save({userId: user_id}).then(todos => todos.related('tags').attach({tag:'book'}));
-// }
+
 
 export function createUserTodo (user_id,todos) {
   return new todo({ task: todos.task, details: todos.details}).save({userId: user_id})
@@ -76,17 +74,18 @@ export function createUserTodo (user_id,todos) {
  */
 export function updateTodo(id, todos) {
   return new todo({ id })
-    .save({ task: todos.task })
-    .then(todos=> todos.refresh());
+    .save({ task: todos.task, details: todos.details })
+    .then(todos => todos.refresh());
 }
 
 /**
- * Delete a todo.
+ * Delete a todo./user/id/todo/todoid
  *
  * @param  {Number|String}  id
  * @return {Promise}
  */
 export function deleteTodo(id) {
+
   return new todo({ id }).fetch().then(todos => todos.destroy());
 }
 
@@ -96,6 +95,6 @@ export function searchText ( id ,search ) {
 
  }).fetchAll({withRelated:['user','tags']})
    .then(todos => todos.related('tags'));
-     // return td.where(x, 'like','%'+search+'%');
 
 }
+

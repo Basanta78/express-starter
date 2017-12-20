@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
  * @returns {string}
  */
 export function generateAccessToken(data) {
-  return jwt.sign({ encryptedData: 'data' }, "secret", { expiresIn: 120 });
+  return jwt.sign({ encryptedData: 'data' }, "secret", { expiresIn: 20 });
 }
 /**
  * Return refresh token.
@@ -16,7 +16,7 @@ export function generateAccessToken(data) {
  * @returns {string}
  */
 export function generateRefreshToken(data) {
-  return jwt.sign({ encryptedData: data },"refreshsecret", { expiresIn: 12000});
+  return jwt.sign({ encryptedData: data },"refreshsecret", { expiresIn: 120000});
 }
 
 /**

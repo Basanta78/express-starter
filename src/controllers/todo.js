@@ -30,8 +30,6 @@ router.post('/', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
-
 /**
  * PUT /api/todo/:id
  */

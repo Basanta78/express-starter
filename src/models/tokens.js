@@ -6,7 +6,7 @@ import user from './user';
 const TABLE_NAME = 'tokens';
 
 /**
- * User model.
+ * Tokens model.
  */
 class Tokens extends bookshelf.Model {
   get tableName() {

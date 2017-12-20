@@ -3,9 +3,8 @@ import * as userService from "../services/userService";
 import { Router } from "express";
 import * as HttpStatus from "http-status-codes";
 const router = Router();
-let jwt = require('jsonwebtoken');
 /**
- * POST /api/users
+ * POST /api/register
  */
 router.post('/', userRegisterValidator, (req, res, next) => {
   userService

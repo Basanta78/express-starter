@@ -38,12 +38,13 @@ export function getUser(id) {
  * @return {Promise}
  */
 export function getUserByEmail(email) {
-  return new User({email}).fetch().then(user => {
+  let user = new User({email}).fetch();
+  return user.then(user => {
     if (!user) {
       throw new Boom.notFound('User not found');
     }
     return user;
-  });
+  })
 }
 
 /**
@@ -60,41 +61,38 @@ export function createUser(user) {
   }).save().then(user => user.refresh());
 }
 
-export function validateUser(user){
-  let users = getUserByEmail(user.email);
-  return users.then(obtainUser=>{
-    if(bcrypt.compareSync(user.password, obtainUser.get('password'))){
-      return obtainUser;
+export async function validateUser(user){
+  try {
+    let users = await getUserByEmail(user.email);
+    if ( bcrypt.compareSync ( user.password, users.toJSON().password ) ) {
+      return users
     }
-    return false;
-  })
+
+  else {
+      throw new Boom.notFound('Invalid password');
+  }}
+  catch (err){
+    throw err;
+  }
+
 }
 
 export async function loginUser (user) {
-    let validUser = await validateUser(user);
-    if(validUser){
-      try{
-        let accessToken = jwt.generateAccessToken(user);
-        let refreshToken = jwt.generateRefreshToken(user);
-        console.log(validUser);
-        validUser.token().save({
-          token: refreshToken
-        });
-
-        return  {
-          user: validUser,
-          token:{
-              access:accessToken,
-              refresh: refreshToken
+            try{
+              let validUser = await validateUser(user);
+              let accessToken = await jwt.generateAccessToken ( user );
+              let refreshToken = await jwt.generateRefreshToken ( user );
+              return {
+                      user: validUser,
+                      token: {
+                        access: accessToken,
+                        refresh: refreshToken
+                      }
+                    };
             }
-
-        };
-      }
-
-      catch(err) {
-        throw( err );
-      }
-    }
+            catch (err){
+              throw err;
+            }
 
 }
 
@@ -127,12 +125,11 @@ export function updateUser(id, user) {
  */
 export function deleteUser(token) {
   try {
-    jwt.verifyRefreshToken(token);
+    // jwt.verifyRefreshToken(token);
     return new Token({token}).fetch().then(token => token.destroy());
   } catch (error) {
     throw error;
   }
-  // return new User({ id }).fetch().then(user => user.destroy());
 }
 export function validateRefreshToken(token){
   console.log(token);

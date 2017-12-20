@@ -11,7 +11,7 @@ router.get('/',ensureToken, (req, res, next) => {
     userService
       .verifyUser(req.token)
       .then(data => res.status(HttpStatus.CREATED).json({ data }))
-      .catch(err => next(err));
+      .catch(err => res.sendStatus(401));
 
 });
 function ensureToken(req,res,next){
@@ -28,4 +28,3 @@ function ensureToken(req,res,next){
 }
 
 export default router;
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbmNyeXB0ZWREYXRhIjoiZGF0YSIsImlhdCI6MTUxMzA5MjY1MSwiZXhwIjoxNTEzMDkyNzcxfQ.N0SfbH5YdFL7hmjMTaJqPm3rWUg2Z7-IAFk0zux7HLw

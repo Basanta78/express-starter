@@ -7,7 +7,7 @@ import token from './tokens';
 const TABLE_NAME = 'users';
 
 /**
- * User model.
+ * Users model.
  */
 class User extends bookshelf.Model {
   get tableName() {

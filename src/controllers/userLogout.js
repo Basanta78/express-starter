@@ -5,7 +5,7 @@ import * as HttpStatus from "http-status-codes";
 const router = Router();
 let jwt = require('jsonwebtoken');
 /**
- * POST /api/users
+ * POST /api/logout
  */
 router.delete('/', (req, res, next) => {
   let authorizationString = req.headers.authorization.substring(7);
