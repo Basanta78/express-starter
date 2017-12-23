@@ -64,7 +64,6 @@ router.use('/register', usersRegisterController);
 router.use('/login',usersLoginController);
 router.use('/verify', usersVerifyController);
 router.use('/logout', usersLogoutController);
-// router.use('/refresh', authValidator.validateRefreshToken, auth.getNewAccessToken);
 
 
 export default router;

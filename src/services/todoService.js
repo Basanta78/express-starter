@@ -63,7 +63,8 @@ export function createTodo(todos) {
 
 export function createUserTodo (user_id,todos) {
   return new todo({ task: todos.task, details: todos.details}).save({userId: user_id})
-    .then(todos => todos.tags().attach([2,3]));
+    .then(todos => {todos.tags().attach([2,3])
+                    return todos});
 }
 /**
  * Update a todo.

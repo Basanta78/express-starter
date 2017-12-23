@@ -41,7 +41,6 @@ const LOGINSCHEMA = {
  * @return {Promise}
  */
 function userloginValidator(req, res, next) {
-  console.log(req.body);
   return validate(req.body, LOGINSCHEMA)
     .then(() => next())
     .catch(err => next(err));

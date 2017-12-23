@@ -4,7 +4,6 @@ import * as todoService from '../services/todoService';
 import { findtodo, todoValidator } from '../validators/todoValidator';
 
 const router = Router();
-
 /**
  * GET /api/todo
  */

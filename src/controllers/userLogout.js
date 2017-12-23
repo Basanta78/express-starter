@@ -11,7 +11,7 @@ router.delete('/', (req, res, next) => {
   let authorizationString = req.headers.authorization.substring(7);
   userService
     .deleteUser(authorizationString)
-    .then(data => res.status(HttpStatus.CREATED).json({ data }))
+    .then(data => res.status(HttpStatus.OK).json({'message':'Successfully logged out' }))
     .catch(err => next(err));
 });
 export default router;

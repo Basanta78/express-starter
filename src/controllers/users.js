@@ -80,7 +80,7 @@ router.post('/', userValidator, (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.post('/:id/todo', todoValidator, (req, res, next) => {
+router.post('/:id/todo',ensureToken, todoValidator, (req, res, next) => {
   todoService
     .createUserTodo(req.params.id, req.body)
     .then(data => res.status(HttpStatus.CREATED).json({ data }))
@@ -89,7 +89,7 @@ router.post('/:id/todo', todoValidator, (req, res, next) => {
 /**
  * PUT /api/users/:id/todo/:todoId
  */
-router.put('/:id/todo/:todoId', findtodo, todoValidator, (req, res, next) => {
+router.put('/:id/todo/:todoId', ensureToken,findtodo, todoValidator, (req, res, next) => {
 
   todoService
     .updateTodo(req.params.todoId, req.body)
