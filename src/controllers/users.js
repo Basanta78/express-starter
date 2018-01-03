@@ -4,7 +4,7 @@ import * as userService from '../services/userService';
 import * as todoService from '../services/todoService';
 
 import { findUser, userValidator } from '../validators/userValidator';
-import { findtodo, todoValidator } from '../validators/todoValidator';
+import { findtodo, todoValidator, todoPutValidator } from '../validators/todoValidator';
 
 import * as jwt from "../utils/jwt";
 
@@ -80,7 +80,7 @@ router.post('/', userValidator, (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.post('/:id/todo',ensureToken, todoValidator, (req, res, next) => {
+router.post('/:id/todo',ensureToken,todoValidator, (req, res, next) => {
   todoService
     .createUserTodo(req.params.id, req.body)
     .then(data => res.status(HttpStatus.CREATED).json({ data }))
@@ -89,7 +89,7 @@ router.post('/:id/todo',ensureToken, todoValidator, (req, res, next) => {
 /**
  * PUT /api/users/:id/todo/:todoId
  */
-router.put('/:id/todo/:todoId', ensureToken,findtodo, todoValidator, (req, res, next) => {
+router.put('/:id/todo/:todoId', ensureToken,findtodo,todoPutValidator, (req, res, next) => {
 
   todoService
     .updateTodo(req.params.todoId, req.body)
@@ -101,10 +101,10 @@ router.put('/:id/todo/:todoId', ensureToken,findtodo, todoValidator, (req, res, 
  * DELETE /api/users/:id/todo/:todoId
  */
 
-router.delete( '/:id/todo/:todoId', findtodo, ( req, res, next ) => {
+router.delete( '/:id/todo/:todoId',ensureToken, findtodo, ( req, res, next ) => {
   todoService
     .deleteTodo( req.params.todoId )
-    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
+    .then(data => res.json({"message": "delete success" }))
     .catch(err => next(err));
 });
 

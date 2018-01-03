@@ -10,6 +10,9 @@ const SCHEMA = {
   details: Joi.string()
     .label('details')
     .max(90)
+    .required(),
+    tags: Joi.array()
+    .label('tags')
     .required()
 };
 
@@ -23,6 +26,21 @@ const SCHEMA = {
  */
 function todoValidator(req, res, next) {
   return validate(req.body, SCHEMA)
+    .then(() => next())
+    .catch(err => next(err));
+}
+const PUTSCHEMA = {
+  task: Joi.string()
+    .label('task')
+    .max(90)
+    .required(),
+  details: Joi.string()
+    .label('details')
+    .max(90)
+    .required(),
+};
+function todoPutValidator(req, res, next) {
+  return validate(req.body, PUTSCHEMA)
     .then(() => next())
     .catch(err => next(err));
 }
@@ -42,4 +60,4 @@ function findtodo(req, res, next) {
     .catch(err => next(err));
 }
 
-export { findtodo, todoValidator };
+export { findtodo, todoValidator, todoPutValidator };

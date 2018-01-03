@@ -5,7 +5,8 @@ import todoController from './controllers/todo';
 import usersRegisterController from './controllers/userRegister';
 import usersLoginController from './controllers/userLogin';
 import usersVerifyController from './controllers/userVerify';
-import usersLogoutController from './controllers/userLogout'
+import usersLogoutController from './controllers/userLogout';
+import tagsController from './controllers/tags';
 
 
 /**
@@ -64,6 +65,7 @@ router.use('/register', usersRegisterController);
 router.use('/login',usersLoginController);
 router.use('/verify', usersVerifyController);
 router.use('/logout', usersLogoutController);
+router.use('/tags', tagsController);
 
 
 export default router;

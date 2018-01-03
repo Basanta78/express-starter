@@ -62,8 +62,10 @@ export function createTodo(todos) {
 
 
 export function createUserTodo (user_id,todos) {
+  let tags = [...todos.tags];
+  console.log(tags);
   return new todo({ task: todos.task, details: todos.details}).save({userId: user_id})
-    .then(todos => {todos.tags().attach([2,3])
+    .then(todos => {todos.tags().attach(tags)
                     return todos});
 }
 /**
@@ -99,3 +101,11 @@ export function searchText ( id ,search ) {
 
 }
 
+/**
+ * Get all users.
+ *
+ * @return {Promise}
+ */
+export function getAlltags() {
+  return tags.fetchAll();
+}
