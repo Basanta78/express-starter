@@ -60,8 +60,13 @@ router.get('/:id/todo',ensureToken, (req, res, next) => {
     .then(data => res.json({ data }))
     .catch(err => next(err));
 });
-
-router.get('/:id/todo/:search/',(req,res,next) =>{
+router.get('/:id/todo/:pageNo', (req, res, next) => {
+  todoService
+    .getUserPageTodo(req.params.id, req.params.pageNo)
+    .then(data => res.json({ data }))
+    .catch(err => next(err));
+});
+router.get('/:id/:search/',(req,res,next) =>{
   todoService
     .searchText(req.params.id,req.params.search)
     .then(data => res.json({data}))

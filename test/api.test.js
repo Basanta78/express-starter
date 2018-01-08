@@ -23,6 +23,7 @@ describe('Base API Test', () => {
     request(app)
       .get(`/api/${randomString}`)
       .end((err, res) => {
+        console.log(res.statusCode)
         expect(res.statusCode).to.be.equal(405);
         expect(res.body.error.code).to.be.equal(405);
         expect(res.body.error.message).to.be.equal('Method Not Allowed');

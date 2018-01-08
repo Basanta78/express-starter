@@ -32,16 +32,32 @@ export function gettodo(id) {
  * @return promise
  */
 export function getUserTodo(uid){
-  let promise = todo.query({where: {user_id: uid}}).fetchPage({withRelated:['tags']});
+  let promise = todo.query({where: {user_id: uid}}).fetchPage({ pageSize:5,withRelated:['tags']});
   return promise.then(todos=>{
-    let next = todos.pagination.page < todos.pagination.pageCount ? todos.pagination.page + 1 : null;
-    let prev =todos.pagination.page > 1 ?todos.pagination.page - 1 : null;
+    // let next = todos.pagination.page < todos.pagination.pageCount ? todos.pagination.page + 1 : null;
+    // let prev =todos.pagination.page > 1 ?todos.pagination.page - 1 : null;
     let current = todos.pagination.page;
     return{
       "Todos":todos.models,
       "metadata": {
-        "nextpage":next,
-        "prevpage":prev,
+        "pageCount": todos.pagination.pageCount,
+        "currentpage":current,
+      }
+    }
+  }
+
+)
+}
+export function getUserPageTodo(uid, pageNo){
+  let promise = todo.query({where: {user_id: uid}}).fetchPage({ pageSize:5, page: pageNo ,withRelated:['tags']});
+  return promise.then(todos=>{
+    // let next = todos.pagination.page < todos.pagination.pageCount ? todos.pagination.page + 1 : null;
+    // let prev =todos.pagination.page > 1 ?todos.pagination.page - 1 : null;
+    let current = todos.pagination.page;
+    return{
+      "Todos":todos.models,
+      "metadata": {
+        "pageCount": todos.pagination.pageCount,
         "currentpage":current,
       }
     }
@@ -97,7 +113,7 @@ export function searchText ( id ,search ) {
    qb.where({user_id: id}).andWhere('details','like','%'+search+'%').orWhere('task', 'like', '%'+search+'%')
 
  }).fetchAll({withRelated:['user','tags']})
-   .then(todos => todos.related('tags'));
+   .then(todos => todos);
 
 }
 

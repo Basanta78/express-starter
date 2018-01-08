@@ -53,7 +53,8 @@ router.get('/swagger.json', (req, res) => {
  *           $ref: '#/definitions/App'
  */
 router.get('/', (req, res) => {
-  res.json({
+  console.log(res.statusCode)
+  res.json({    
     app: req.app.locals.title,
     apiVersion: req.app.locals.version
   });
