@@ -73,7 +73,14 @@ router.get('/:id/:search/',(req,res,next) =>{
     .catch(err => next(err));
 
 });
+router.get('/:id/todo',(req,res,next) =>{
+  console.log(req.params.id, req.query.search)
+  todoService
+    .searchText(req.params.id,req.query.search)
+    .then(data => res.json({data}))
+    .catch(err => next(err));
 
+});
 
 /**
  * POST /api/users

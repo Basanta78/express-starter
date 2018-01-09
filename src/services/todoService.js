@@ -111,10 +111,23 @@ export function deleteTodo(id) {
 export function searchText ( id ,search ) {
  return todo.query((qb)=>{
    qb.where({user_id: id}).andWhere('details','like','%'+search+'%').orWhere('task', 'like', '%'+search+'%')
-
- }).fetchAll({withRelated:['user','tags']})
-   .then(todos => todos);
-
+ })
+//  }).fetchAll({withRelated:['user','tags']})
+//    .then(todos => todos);
+.fetchPage({ pageSize:5 ,withRelated:['tags']})
+.then(todos=>{
+    // let next = todos.pagination.page < todos.pagination.pageCount ? todos.pagination.page + 1 : null;
+    // let prev =todos.pagination.page > 1 ?todos.pagination.page - 1 : null;
+    let current = todos.pagination.page;
+    return{
+      "Todos":todos.models,
+      "metadata": {
+        "pageCount": todos.pagination.pageCount,
+        "currentpage":current,
+      }
+    }
+  }
+)
 }
 
 /**

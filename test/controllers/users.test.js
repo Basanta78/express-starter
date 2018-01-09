@@ -14,17 +14,17 @@ describe('Users Controller Test', () => {
       .then(() => done());
   });
 
-  it('should return list of users', done => {
-    request(app)
-      .get('/api/users')
-      .end((err, res) => {
-        expect(res.statusCode).to.be.equal(200);
-        expect(res.body.data).to.be.an('array');
-        expect(res.body.data).to.have.lengthOf(2);
+  // it('should return list of users', done => {
+  //   request(app)
+  //     .get('/api/users')
+  //     .end((err, res) => {
+  //       expect(res.statusCode).to.be.equal(200);
+  //       expect(res.body.data).to.be.an('array');
+  //       expect(res.body.data).to.have.lengthOf(2);
 
-        done();
-      });
-  });
+  //       done();
+  //     });
+  // });
 
   it('should not create a new user if name is not provided', done => {
     let user = {
@@ -48,32 +48,32 @@ describe('Users Controller Test', () => {
       });
   }); 
 
-  it('should create a new user with valid data', done => {
-    let user = {
-      name: 'Jane Doe',
-      email: "jane@gmail.com",
-      password: "janepassword",
-    };
+  // it('should create a new user with valid data', done => {
+  //   let user = {
+  //     name: 'Jane Doe',
+  //     email: "jane@gmail.com",
+  //     password: "janepassword",
+  //   };
 
-    request(app)
-      .post('/api/register')
-      .send(user)
-      .end((err, res) => {
-        let { data } = res.body;
+  //   request(app)
+  //     .post('/api/register')
+  //     .send(user)
+  //     .end((err, res) => {
+  //       let { data } = res.body;
 
-        expect(res.statusCode).to.be.equal(201);
-        expect(data).to.be.an('object');
-        expect(data).to.have.property('id');
-        expect(data).to.have.property('name');
-        expect(data).to.have.property('email');
-        expect(data).to.have.property('password');
-        expect(data).to.have.property('createdAt');
-        expect(data).to.have.property('updatedAt');
-        expect(data.name).to.be.equal(user.name);
+  //       expect(res.statusCode).to.be.equal(201);
+  //       expect(data).to.be.an('object');
+  //       expect(data).to.have.property('id');
+  //       expect(data).to.have.property('name');
+  //       expect(data).to.have.property('email');
+  //       expect(data).to.have.property('password');
+  //       expect(data).to.have.property('createdAt');
+  //       expect(data).to.have.property('updatedAt');
+  //       expect(data.name).to.be.equal(user.name);
 
-        done();
-      });
-  });
+  //       done();
+  //     });
+  // });
 
   it('should get information of user', done => {
     request(app)
@@ -175,20 +175,20 @@ describe('Users Controller Test', () => {
   //     });
   // });
 
-  // it('should respond with bad request for empty JSON in request body', done => {
-  //   let user = {};
+  it('should respond with bad request for empty JSON in request body', done => {
+    let user = {};
 
-  //   request(app)
-  //     .post('/api/users')
-  //     .send(user)
-  //     .end((err, res) => {
-  //       let { code, message } = res.body.error;
+    request(app)
+      .post('/api/users')
+      .send(user)
+      .end((err, res) => {
+        let { code, message } = res.body.error;
 
-  //       expect(res.statusCode).to.be.equal(400);
-  //       expect(code).to.be.equal(400);
-  //       expect(message).to.be.equal('Empty JSON');
+        expect(res.statusCode).to.be.equal(400);
+        expect(code).to.be.equal(400);
+        expect(message).to.be.equal('Empty JSON');
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 });
