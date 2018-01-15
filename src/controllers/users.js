@@ -55,10 +55,20 @@ router.get('/:id', (req, res, next) => {
  * GET /api/users/:id/todo
  */
 router.get('/:id/todo',ensureToken, (req, res, next) => {
+  if((req.query).length === 0)
+  {
   todoService
     .getUserTodo(req.params.id)
     .then(data => res.json({ data }))
     .catch(err => next(err));
+  }
+  else{
+  todoService
+    .searchText(req.params.id,req.query.search)
+    .then(data => res.json({data}))
+    .catch(err => next(err));
+
+  }
 });
 router.get('/:id/todo/:pageNo', (req, res, next) => {
   todoService
@@ -66,17 +76,10 @@ router.get('/:id/todo/:pageNo', (req, res, next) => {
     .then(data => res.json({ data }))
     .catch(err => next(err));
 });
+
 router.get('/:id/:search/',(req,res,next) =>{
   todoService
     .searchText(req.params.id,req.params.search)
-    .then(data => res.json({data}))
-    .catch(err => next(err));
-
-});
-router.get('/:id/todo',(req,res,next) =>{
-  console.log(req.params.id, req.query.search)
-  todoService
-    .searchText(req.params.id,req.query.search)
     .then(data => res.json({data}))
     .catch(err => next(err));
 

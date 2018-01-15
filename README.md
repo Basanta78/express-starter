@@ -9,7 +9,8 @@ Starter application for building APIs with [Express.js](http://expressjs.com/)
 Comes with:
 
 * [ES6](http://babeljs.io/learn-es2015/) features/modules
-* ES7 [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)/[await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)
+* ES7 [async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)/
+[await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)
 * [Bookshelf](http://bookshelfjs.org/) ORM and [Knex](http://knexjs.org/) migrations
 * PostgreSQL (default) with support for MySQL and SQLite
 * API documentation using [swagger-ui](https://www.npmjs.com/package/swagger-ui) and [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc)
